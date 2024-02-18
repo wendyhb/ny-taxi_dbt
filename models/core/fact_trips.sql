@@ -3,13 +3,13 @@
 with green_data as (
     select *, 
         'Green' as service_type 
-    from {{ ref('stg_green_taxi_data') }}
+    from {{ ref('stg_green_tripdata') }}
 ), 
 
 yellow_data as (
     select *, 
         'Yellow' as service_type
-    from {{ ref('stg_yellow_cab_data') }}
+    from {{ ref('stg_yellow_tripdata') }}
 ), 
 
 trips_unioned as (
@@ -23,14 +23,14 @@ dim_zones as (
     where borough != 'Unknown'
 )
 select 
-    trips_unioned.tripid, 
-    trips_unioned.vendorid, 
+    trips_unioned.trip_id, 
+    trips_unioned.vendor_id, 
     trips_unioned.service_type,
-    trips_unioned.ratecodeid, 
-    trips_unioned.pickup_locationid, 
+    trips_unioned.ratecode_id, 
+    trips_unioned.pickup_location_id, 
     pickup_zone.borough as pickup_borough, 
     pickup_zone.zone as pickup_zone, 
-    trips_unioned.dropoff_locationid,
+    trips_unioned.dropoff_location_id,
     dropoff_zone.borough as dropoff_borough, 
     dropoff_zone.zone as dropoff_zone,  
     trips_unioned.pickup_datetime, 
@@ -51,6 +51,6 @@ select
     trips_unioned.payment_type_description
 from trips_unioned
 inner join dim_zones as pickup_zone
-on trips_unioned.pickup_locationid = pickup_zone.locationid
+on trips_unioned.pickup_location_id = pickup_zone.location_id
 inner join dim_zones as dropoff_zone
-on trips_unioned.dropoff_locationid = dropoff_zone.locationid
+on trips_unioned.dropoff_location_id = dropoff_zone.location_id
