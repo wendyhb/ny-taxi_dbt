@@ -11,11 +11,7 @@ dim_zones as (
     where borough != 'Unknown'
 )
 select 
-    fhv_data.dispatching_base_num,
-    fhv_data.pickup_location_id,
-    fhv_data.dropoff_location_id,
-    fhv_data.sr_flag,
-    fhv_data.affiliated_base_number,
+    fhv_data.*,
     pickup_zone.borough as pickup_borough, 
     pickup_zone.zone as pickup_zone, 
     dropoff_zone.borough as dropoff_borough, 
